@@ -5,8 +5,8 @@ from MyPetstagramProject.pets.models import Pet
 from MyPetstagramProject.pets.utils import get_pet_by_name_and_username
 
 
-def details_pet(request, username, pet_slug):
-    pet = get_pet_by_name_and_username(pet_slug, username)
+def details_pet(request, pet_slug):
+    pet = get_pet_by_name_and_username(pet_slug)
     photos = [apply_likes_count(photo) for photo in pet.photo_set.all()]
     photos = [apply_user_liked_photo(photo) for photo in photos]
 
