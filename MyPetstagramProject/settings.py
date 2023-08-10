@@ -97,7 +97,7 @@ STATICFILES_DIRS = (BASE_DIR / 'staticfiles',)
 # медиафайловете ми файлове ще бъдат достъпвани на media
 MEDIA_URL = '/media/'
 # но ще се намират на директория media_files
-MEDIA_ROOT = BASE_DIR / 'media_files'
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
