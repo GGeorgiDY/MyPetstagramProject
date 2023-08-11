@@ -15,3 +15,10 @@ class PhotoCommentForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class SearchPhotosForm(forms.Form):
+    pet_name = forms.CharField(
+        max_length=50,
+        required=False,
+    )

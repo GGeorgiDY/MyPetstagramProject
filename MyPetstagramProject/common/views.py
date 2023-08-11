@@ -1,7 +1,7 @@
 import pyperclip
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from MyPetstagramProject.common.forms import PhotoCommentForm
+from MyPetstagramProject.common.forms import PhotoCommentForm, SearchPhotosForm
 from MyPetstagramProject.common.models import PhotoLike
 from MyPetstagramProject.common.utils import get_photo_url
 from MyPetstagramProject.core.photo_utils import apply_likes_count, apply_user_liked_photo
@@ -9,11 +9,22 @@ from MyPetstagramProject.photos.models import Photo
 
 
 def index(request):
-    photos = [apply_likes_count(photo) for photo in Photo.objects.all()]
+    search_form = SearchPhotosForm(request.GET)   # слагаме го заради search формата
+    search_pattern = None
+    if search_form.is_valid():   # правим го за да ни се попълни информацията която я имаме
+        search_pattern = search_form.cleaned_data['pet_name']
+
+    photos = Photo.objects.all()  # слагаме го заради search формата
+    if search_pattern:
+        photos = photos.filter(tagged_pets__name__icontains=search_pattern)
+    # горните редове са за ssearch box-a
+
+    photos = [apply_likes_count(photo) for photo in photos]
     photos = [apply_user_liked_photo(photo) for photo in photos]
     context = {
         'photos': photos,
         'comment_form': PhotoCommentForm(),
+        'search_form': search_form,
     }
 
     return render(request, 'common/home-page.html', context)
