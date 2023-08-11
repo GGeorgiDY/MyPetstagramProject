@@ -19,6 +19,10 @@ class SignUpView(views.CreateView):
     success_url = reverse_lazy('index')
 
 
+class SignOutView(auth_views.LogoutView):
+    next_page = reverse_lazy('index')    # като се logout-нем къде искаме да отидем
+
+
 def delete_user(request, pk):
     return render(request, 'accounts/profile-delete-page.html')
 
