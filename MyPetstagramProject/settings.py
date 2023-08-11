@@ -1,4 +1,5 @@
 from pathlib import Path
+from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -104,3 +105,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # това е нещо с което казваме на джанго, че искаме за юзъри вече да не използваш твой си build-in юзър, а да използва този accounts.AppUser
 AUTH_USER_MODEL = 'accounts.AppUser'
+
+# като натисна някакъв login бутон, да ме препраща на index страницата
+LOGIN_REDIRECT_URL = reverse_lazy('index')
