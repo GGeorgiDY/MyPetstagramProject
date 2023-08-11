@@ -58,5 +58,7 @@ class UserEditView(views.UpdateView):
         })
 
 
-def delete_user(request, pk):
-    return render(request, 'accounts/profile-delete-page.html')
+class UserDeleteView(views.DeleteView):
+    template_name = 'accounts/profile-delete-page.html'
+    model = UserModel
+    success_url = reverse_lazy('index')
