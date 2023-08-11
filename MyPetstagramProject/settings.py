@@ -101,3 +101,6 @@ MEDIA_ROOT = BASE_DIR / 'mediafiles'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# това е нещо с което казваме на джанго, че искаме за юзъри вече да не използваш твой си build-in юзър, а да използва този accounts.AppUser
+AUTH_USER_MODEL = 'accounts.AppUser'
