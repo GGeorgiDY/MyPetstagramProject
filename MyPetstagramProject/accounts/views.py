@@ -46,8 +46,16 @@ class UserDetailsView(views.DetailView):
         return context
 
 
-def edit_user(request, pk):
-    return render(request, 'accounts/profile-edit-page.html')
+class UserEditView(views.UpdateView):
+    template_name = 'accounts/profile-edit-page.html'
+    model = UserModel
+    fields = ('first_name', 'last_name', 'username', 'gender', 'email')
+
+    # долното пренасочване го правим динамично заради "pk".
+    def get_success_url(self):
+        return reverse_lazy('details user', kwargs={
+            'pk': self.request.user.pk,
+        })
 
 
 def delete_user(request, pk):
