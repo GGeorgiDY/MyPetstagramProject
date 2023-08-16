@@ -8,7 +8,7 @@ from MyPetstagramProject.photos.models import Photo
 class PhotoBaseForm(forms.ModelForm):
     class Meta:
         model = Photo
-        fields = ('photo', 'description', 'location', 'tagged_pets')
+        fields = ('photo', 'description', 'location', 'tagged_pets', )
 
 
 class PhotoCreateForm(PhotoBaseForm):

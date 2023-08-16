@@ -19,9 +19,13 @@
                 <!-- Link to User Profile Page -->
                 <a href="{% url 'details user' pk=1 %}">
                     <!-- if user has first name and last name -->
-                    Diyan Kalaydzhiev
-                    <!-- else -->
-                    <!-- show user username -->
+                    {% if user.get_full_name %}
+                        {{ user.get_full_name }}
+                        <!-- else -->
+                    {% else %}
+                        <!-- show user username -->
+                        {{ user.username }}
+                    {% endif %}
                 </a>
                 <br>
                 {% if photo.location %}
@@ -34,7 +38,7 @@
 
     <!-- Start Pet Photo -->
     <div class="imgBx" id="photo-{{ photo.pk }}">
-        <img src="media/{{ photo.photo }}" alt="post" class="cover">
+        <img src="/media/{{ photo.photo }}" alt="post" class="cover">
     </div>
     <!-- End Pet Photo -->
 

@@ -1,21 +1,22 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from MyPetstagramProject.common.utils import get_user_liked_photos
 from MyPetstagramProject.photos.forms import PhotoDeleteForm, PhotoCreateForm, PhotoEditForm
 from MyPetstagramProject.photos.models import Photo
 
 
-# @login_required
+@login_required
 def add_photo(request):
     if request.method == 'GET':
         form = PhotoCreateForm()
     else:
         form = PhotoCreateForm(request.POST, request.FILES)   # без request.FILES няма да се качи снимката
         if form.is_valid():
-            # photo = form.save(commit=False)
-            # photo.user = request.user
-            # photo.save()
-            # form.save_m2m()             # викаме го за да хване pk
-            photo = form.save()           # form.save() returns the object saved
+            photo = form.save(commit=False)   # създай самото photo но не го персиствай(записвай) към базата
+            photo.user = request.user   # сетваме юзъра на pet-a
+            photo.save()   # ръчно го попълваме
+            form.save_m2m()   # many2many - използва се при commit=False - викаме го за да хване pk
+            # photo = form.save()           # form.save() returns the object saved
+
             return redirect('details photo', pk=photo.pk)
 
     context = {
@@ -26,13 +27,13 @@ def add_photo(request):
 
 def details_photo(request, pk):
     photo = Photo.objects.filter(pk=pk).get()
-    # user_liked_photos = Photo.objects.filter(pk=pk, user_id=request.user.pk,)
+    user_liked_photos = Photo.objects.filter(pk=pk, user_id=request.user.pk)
 
     context = {
         'photo': photo,
-        'has_user_liked_photo': get_user_liked_photos(pk),
+        'has_user_liked_photo': user_liked_photos,
         'likes_count': photo.photolike_set.count(),
-        # 'is_owner': request.user == photo.user,
+        'is_owner': request.user == photo.user,
     }
 
     return render(request, 'photos/photo-details-page.html', context)

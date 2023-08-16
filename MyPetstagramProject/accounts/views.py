@@ -33,15 +33,14 @@ class UserDetailsView(views.DetailView):
         context['is_owner'] = self.request.user == self.object
         # self.request.user е логнатия юзър
         # self.object е селектирания юзър
-        # context['pets_count'] = self.object.pet_set.count()
-        # context['photos_count'] = self.object.photo_set.count()
+        context['pets_count'] = self.object.pet_set.count()   # вземи броя на животните, които потребителя има
+        context['photos_count'] = self.object.photo_set.count()   # вземи броя на снимките, които потребителя има
 
         # Photo.objects.select_related()  # взима тези обекти които имат foreign key към текущия обект. Връща QuerrySet
         # Photo.objects.prefetch_related()    # взими свързаните по foreign key неща. Използва се за Many-to-one и many-to-many релации.
 
-        # photos = self.object.photo_set.prefetch_related('photolike_set') # искаме за всичките photos да им вземещ техните photolikes предварително
-
-        # context['likes_count'] = sum(x.photolike_set.count() for x in photos)
+        photos = self.object.photo_set.prefetch_related('photolike_set')   # prefech_related казва аз ще използвам photos, но ти ми подготви и related нещата по foreign key. Това се прави с цел да имаме по-малко заявки към базата
+        context['likes_count'] = sum(x.photolike_set.count() for x in photos)    # за всичките photos да им вземещ техните photolikes предварително
 
         return context
 

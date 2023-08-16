@@ -2,18 +2,8 @@ from enum import Enum
 from django.contrib.auth import models as auth_models
 from django.core import validators
 from django.db import models
+from MyPetstagramProject.core.model_mixins import ChoicesEnumMixin
 from MyPetstagramProject.core.validators import validate_only_letters
-
-
-class ChoicesEnumMixin:
-    @classmethod
-    def choices(cls):
-        return [(x.name, x.value) for x in cls]
-
-    # правим си динамично максималната дължина на gender да е 9 - понеже DoNotShow е най-дългия стринг и е с 9 букви
-    @classmethod
-    def max_len(cls):
-        return max(len(name) for name, _ in cls.choices())
 
 
 # Enum наследява EnumMeta, която ни дава възможност ние да итерираме. Това означава че ние самия клас може да го пускаме във for цикъл
