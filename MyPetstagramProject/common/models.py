@@ -3,7 +3,7 @@ from django.db import models
 from MyPetstagramProject.photos.models import Photo
 
 
-# UserModel = get_user_model()
+UserModel = get_user_model()
 
 
 class PhotoComment(models.Model):
@@ -27,10 +27,10 @@ class PhotoComment(models.Model):
         blank=True,
     )
 
-    # user = models.ForeignKey(
-    #     UserModel,
-    #     on_delete=models.RESTRICT,
-    # )
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.RESTRICT,
+    )
 
 
 class PhotoLike(models.Model):
@@ -41,7 +41,7 @@ class PhotoLike(models.Model):
         blank=True,
     )
 
-    # user = models.ForeignKey(
-    #     UserModel,
-    #     on_delete=models.RESTRICT,
-    # )
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.RESTRICT,
+    )

@@ -6,7 +6,7 @@ from MyPetstagramProject.pets.models import Pet
 from MyPetstagramProject.photos.validators import validate_file_less_than_5mb
 
 
-# UserModel = get_user_model()
+UserModel = get_user_model()
 
 
 class Photo(StrFromFieldsMixin, models.Model):
@@ -54,7 +54,8 @@ class Photo(StrFromFieldsMixin, models.Model):
     )
 
     # One-to-many relations
-    # user = models.ForeignKey(
-    #     UserModel,
-    #     on_delete=models.RESTRICT,
-    # )
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.RESTRICT,
+    )
+

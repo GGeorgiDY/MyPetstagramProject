@@ -3,7 +3,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from MyPetstagramProject.core.model_mixins import StrFromFieldsMixin
 
-# UserModel = get_user_model()
+UserModel = get_user_model()
 
 
 class Pet(StrFromFieldsMixin, models.Model):
@@ -34,11 +34,11 @@ class Pet(StrFromFieldsMixin, models.Model):
         blank=True,
     )
 
-    # user = models.ForeignKey(
-    #     UserModel,
-    #     on_delete=models.RESTRICT,
-    # )
-    #
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.RESTRICT,
+    )
+
 
     # задаваме автоматично да се прави слъг, при добавяне на домашен любимец
     # save е метод, който се извиква автоматично когато се създава или променя домашен любимец.
