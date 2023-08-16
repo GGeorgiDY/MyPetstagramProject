@@ -5,8 +5,8 @@ from MyPetstagramProject.pets.models import Pet
 from MyPetstagramProject.pets.utils import get_pet_by_name_and_username
 
 
-def details_pet(request, pet_slug):
-    pet = get_pet_by_name_and_username(pet_slug)
+def details_pet(request, username, pet_slug):
+    pet = get_pet_by_name_and_username(pet_slug, username)
     photos = [apply_likes_count(photo) for photo in pet.photo_set.all()]
     photos = [apply_user_liked_photo(photo) for photo in photos]
 
@@ -14,7 +14,7 @@ def details_pet(request, pet_slug):
         'pet': pet,
         'photos_count': pet.photo_set.count(),
         'pet_photos': photos,
-        # 'is_owner': pet.user == request.user,
+        'is_owner': pet.user == request.user,
     }
     return render(request, 'pets/pet-details-page.html', context,)
 
@@ -26,10 +26,10 @@ def add_pet(request):
         form = PetCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            # pet = form.save(commit=False)
-            # pet.user = request.user
-            # pet.save()
-            return redirect('details user', pk=1)   # TODO: fix this when auth
+            pet = form.save(commit=False)   # създай самия pet но не го персиствай(записвай) към базата
+            pet.user = request.user   # сетваме юзъра на pet-a
+            pet.save()   # ръчно го попълваме
+            return redirect('details user', pk=request.user.pk)
 
     context = {
         'form': form,
@@ -39,7 +39,7 @@ def add_pet(request):
 
 
 def edit_pet(request, username, pet_slug):
-    pet = Pet.objects.filter(slug=pet_slug).get()
+    pet = get_pet_by_name_and_username(pet_slug, username)
 
     # if not is_owner(request, pet):
     #     return redirect('details pet', username=username, pet_slug=pet_slug)
@@ -61,7 +61,7 @@ def edit_pet(request, username, pet_slug):
 
 
 def delete_pet(request, username, pet_slug):
-    pet = Pet.objects.filter(slug=pet_slug).get()
+    pet = get_pet_by_name_and_username(pet_slug, username)
 
     if request.method == 'GET':
         form = PetDeleteForm(instance=pet)
